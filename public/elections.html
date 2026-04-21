@@ -289,8 +289,8 @@ tr:hover td{background:#fafafa}
 // CONFIGURATION
 // ============================================================
 const PROXY = window.location.hostname === 'localhost'
-  ? 'http://localhost:8888/.netlify/functions/elections-csv?knesset=25'
-  : '/.netlify/functions/elections-csv?knesset=25';
+  ? 'http://localhost:3000/api/elections-csv?knesset=25'
+  : '/api/elections-csv?knesset=25';
 
 // Party definitions — letter codes from the official CSV
 const PARTIES = {
