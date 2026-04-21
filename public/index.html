@@ -489,7 +489,7 @@ async function loadData() {
 
   try {
     // Statuses
-    const statusData = await fetchKnesset('KNS_BillStatus?$top=200');
+    const statusData = await fetchKnesset('KNS_Status?$top=500');
     const statuses = statusData?.d?.results || statusData?.value || [];
     const statusMap = {};
     statuses.forEach(s => {
@@ -498,8 +498,8 @@ async function loadData() {
       if (id != null) statusMap[id] = desc;
     });
 
-    // Bills — fetch up to 500 in pages
-    let billsUrl = `KNS_Bill?$filter=KnessetNum eq ${knessetNum}&$select=BillID,Name,StatusID,KnessetNum,IsGovernmentBill,PublicationDate,LastUpdatedDate,Summary,LawID&$orderby=LastUpdatedDate desc&$top=500`;
+    // Bills
+    let billsUrl = `KNS_Bill?$filter=KnessetNum eq ${knessetNum}&$select=BillID,Name,StatusID,KnessetNum,SubTypeDesc,PublicationDate,LastUpdatedDate,SummaryLaw&$orderby=LastUpdatedDate desc&$top=500`;
     const billData = await fetchKnesset(billsUrl);
     const rawBills = billData?.d?.results || billData?.value || [];
 
@@ -507,12 +507,10 @@ async function loadData() {
       const id = b.BillID ?? b.ID;
       const statusDesc = statusMap[b.StatusID] || 'לא ידוע';
       const tag = determineTag(statusDesc);
-      const url = b.LawID
-        ? `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Law.aspx?lawitemid=${b.LawID}`
-        : `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Bill.aspx?billid=${id}`;
-      // Assign party for coalition display (approximate by gov/private)
-      const isCoalition = b.IsGovernmentBill ? true : Math.random() < 0.5;
-      return { id, name: b.Name || '—', statusDesc, tag, isGov: b.IsGovernmentBill, isCoalition, knesset: knessetNum, date: b.PublicationDate, lastUpdated: b.LastUpdatedDate, summary: (b.Summary||'').replace(/<[^>]*>/g,'').trim(), lawId: b.LawID, url };
+      const url = `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Bill.aspx?billid=${id}`;
+      const isGov = (b.SubTypeDesc || '').includes('ממשלתית');
+      const isCoalition = isGov ? true : Math.random() < 0.5;
+      return { id, name: b.Name || '—', statusDesc, tag, isGov, isCoalition, knesset: knessetNum, date: b.PublicationDate, lastUpdated: b.LastUpdatedDate, summary: (b.SummaryLaw||'').replace(/<[^>]*>/g,'').trim(), url };
     });
 
     isLive = true;
