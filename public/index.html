@@ -455,6 +455,19 @@ async function fetchKnesset(path) {
   return fetchProxy(path);
 }
 
+async function fetchAllPages(firstPath) {
+  let results = [];
+  let path = firstPath;
+  while (path) {
+    const data = await fetchKnesset(path);
+    const page = data?.d?.results || data?.value || [];
+    results = results.concat(page);
+    const next = data?.['odata.nextLink'] || data?.['@odata.nextLink'] || null;
+    path = next ? decodeURIComponent(next) : null;
+  }
+  return results;
+}
+
 async function fetchCached(knessetNum) {
   const [statusData, billData] = await Promise.all([
     fetch('/data/bill-status.json').then(r => { if (!r.ok) throw new Error('no cache'); return r.json(); }),
@@ -498,10 +511,9 @@ async function loadData() {
       if (id != null) statusMap[id] = desc;
     });
 
-    // Bills
-    let billsUrl = `KNS_Bill?$filter=KnessetNum eq ${knessetNum}&$select=BillID,Name,StatusID,KnessetNum,SubTypeDesc,PublicationDate,LastUpdatedDate,SummaryLaw&$orderby=LastUpdatedDate desc&$top=500`;
-    const billData = await fetchKnesset(billsUrl);
-    const rawBills = billData?.d?.results || billData?.value || [];
+    // Bills — paginate through all results (API caps at 100/page)
+    let billsUrl = `KNS_Bill?$filter=KnessetNum eq ${knessetNum}&$select=BillID,Name,StatusID,KnessetNum,SubTypeDesc,PublicationDate,LastUpdatedDate,SummaryLaw&$orderby=LastUpdatedDate desc&$top=100`;
+    const rawBills = await fetchAllPages(billsUrl);
 
     allBills = rawBills.map(b => {
       const id = b.BillID ?? b.ID;
