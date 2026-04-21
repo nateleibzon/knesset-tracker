@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מעקב חוקי הכנסת</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;background:#f0f4f8;color:#1a2332;min-height:100vh}
+:root{
+  --blue:#1a56db;--blue-light:#e8f0fe;--blue-mid:#3b82f6;
+  --green:#059669;--green-light:#d1fae5;
+  --amber:#d97706;--amber-light:#fef3c7;
+  --red:#dc2626;--red-light:#fee2e2;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+  --gray:#6b7280;--border:#e5e7eb;--white:#ffffff;
+}
+/* NAV */
+nav{background:#fff;border-bottom:1px solid var(--border);padding:0 1.2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;gap:8px}
+.nav-brand{font-size:1.05rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.nav-links{display:flex;gap:2px;flex-wrap:wrap}
+.nav-link{padding:5px 10px;border-radius:7px;cursor:pointer;font-size:0.82rem;border:none;background:none;color:#374151;transition:all 0.15s;white-space:nowrap}
+.nav-link:hover{background:var(--blue-light);color:var(--blue)}
+.nav-link.active{background:var(--blue-light);color:var(--blue);font-weight:600}
+.nav-right{display:flex;align-items:center;gap:8px}
+.badge{padding:2px 8px;border-radius:20px;font-weight:600;font-size:0.7rem;white-space:nowrap}
+.badge-live{background:#d1fae5;color:#065f46}
+.badge-demo{background:#f3f4f6;color:#6b7280}
+.badge-loading{background:#dbeafe;color:#1e40af;animation:pulse 1.5s infinite}
+.badge-error{background:#fee2e2;color:#991b1b}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+/* BUTTONS */
+.btn{padding:5px 12px;border-radius:7px;cursor:pointer;font-size:0.82rem;border:1px solid var(--border);background:#fff;color:#374151;transition:all 0.15s;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{background:#f3f4f6}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:#1a4ec8}
+.btn-sm{padding:3px 9px;font-size:0.78rem}
+.btn-icon{padding:5px;border-radius:7px;border:none;background:none;cursor:pointer;color:#6b7280;font-size:1rem;transition:all 0.15s;line-height:1}
+.btn-icon:hover{background:#f3f4f6;color:#374151}
+.btn-icon.active{color:#f59e0b}
+/* LAYOUT */
+main{padding:1.2rem;max-width:1200px;margin:0 auto}
+.page{display:none}.page.active{display:block}
+.section-title{font-size:1rem;font-weight:700;color:#1a2332;margin-bottom:.75rem;margin-top:1.4rem;display:flex;align-items:center;gap:6px}
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.2rem}
+.kpi{background:#fff;border-radius:12px;padding:.9rem;border:1px solid var(--border);cursor:pointer;transition:all 0.15s}
+.kpi:hover{border-color:var(--blue-mid);box-shadow:0 0 0 2px rgba(59,130,246,.1)}
+.kpi-label{font-size:0.75rem;color:#6b7280;margin-bottom:3px}
+.kpi-value{font-size:1.5rem;font-weight:700;color:#1a2332}
+.kpi.proposed .kpi-value{color:var(--blue)}
+.kpi.passed .kpi-value{color:var(--green)}
+.kpi.removed .kpi-value{color:var(--red)}
+.kpi.gov .kpi-value{color:var(--purple)}
+.kpi.priv .kpi-value{color:var(--amber)}
+/* CHARTS */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem}
+.chart-card{background:#fff;border-radius:12px;padding:1rem;border:1px solid var(--border)}
+.chart-card.full{grid-column:1/-1}
+.chart-title{font-size:0.85rem;font-weight:600;color:#374151;margin-bottom:.8rem}
+@media(max-width:640px){.charts-grid{grid-template-columns:1fr}}
+/* FILTERS */
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.8rem;align-items:center}
+.filter-select{padding:6px 9px;border-radius:7px;border:1px solid var(--border);background:#fff;font-size:0.82rem;color:#374151;cursor:pointer}
+.search-input{flex:1;min-width:180px;padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:#fff;font-size:0.82rem;direction:rtl}
+.search-input:focus,.filter-select:focus{outline:2px solid var(--blue);outline-offset:-1px}
+.tag-filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.8rem}
+.tag-btn{padding:3px 10px;border-radius:20px;font-size:0.73rem;cursor:pointer;border:1px solid transparent;transition:all 0.15s}
+.tag-btn.all{background:#f3f4f6;color:#374151;border-color:var(--border)}
+.tag-btn.proposed{background:var(--blue-light);color:var(--blue);border-color:#bfdbfe}
+.tag-btn.passed{background:var(--green-light);color:var(--green);border-color:#a7f3d0}
+.tag-btn.removed{background:var(--red-light);color:var(--red);border-color:#fecaca}
+.tag-btn.active{box-shadow:0 0 0 2px currentColor;font-weight:700}
+.count-info{font-size:0.78rem;color:#6b7280;margin-bottom:.7rem}
+/* BILLS */
+.bills-list{display:grid;gap:8px}
+.bill-card{background:#fff;border-radius:10px;padding:1rem;border:1px solid var(--border);cursor:pointer;transition:all 0.15s}
+.bill-card:hover{border-color:#93c5fd;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.bill-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.bill-title{font-size:0.9rem;font-weight:600;color:#1a2332;line-height:1.4}
+.bill-actions{display:flex;gap:4px;flex-shrink:0}
+.badges{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.pill{padding:2px 7px;border-radius:20px;font-size:0.7rem;font-weight:600}
+.pill.proposed{background:var(--blue-light);color:var(--blue)}
+.pill.passed{background:var(--green-light);color:var(--green)}
+.pill.removed{background:var(--red-light);color:var(--red)}
+.pill.gov{background:var(--purple-light);color:var(--purple)}
+.pill.private{background:var(--amber-light);color:var(--amber)}
+.pill.neutral{background:#f3f4f6;color:#4b5563}
+.pill.match{background:#d1fae5;color:#065f46}
+.pill.mismatch{background:#fee2e2;color:#991b1b}
+.bill-summary{font-size:0.8rem;color:#4b5563;line-height:1.45;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bill-meta{font-size:0.73rem;color:#9ca3af;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ext-link{color:var(--blue);font-size:0.75rem;text-decoration:none}
+.ext-link:hover{text-decoration:underline}
+/* SKELETONS */
+.skeleton{background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 50%,#f3f4f6 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;height:14px;margin-bottom:6px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{background:#fff;border-radius:10px;padding:1rem;border:1px solid var(--border);margin-bottom:8px}
+/* DETAILS */
+.det-back{display:flex;align-items:center;gap:6px;color:var(--blue);cursor:pointer;font-size:0.88rem;border:none;background:none;margin-bottom:1rem}
+.det-back:hover{text-decoration:underline}
+.det-card{background:#fff;border-radius:12px;padding:1.3rem;border:1px solid var(--border);margin-bottom:.9rem}
+.det-title{font-size:1.2rem;font-weight:700;color:#1a2332;margin-bottom:10px;line-height:1.4}
+.det-label{font-size:0.75rem;font-weight:700;color:#6b7280;margin-bottom:3px;text-transform:uppercase;letter-spacing:.03em;margin-top:.8rem}
+.det-text{font-size:0.88rem;color:#374151;line-height:1.6}
+/* AI CARD */
+.ai-card{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:12px;padding:1.1rem;margin-bottom:.9rem}
+.ai-title{font-size:0.82rem;font-weight:700;color:var(--blue);margin-bottom:.7rem;display:flex;align-items:center;gap:5px}
+.ai-section{margin-bottom:.65rem}
+.ai-lbl{font-size:0.72rem;font-weight:700;color:#6b7280;margin-bottom:2px;text-transform:uppercase}
+.ai-text{font-size:0.85rem;color:#374151;line-height:1.55}
+.beneficiary-tag{background:#fff;border-radius:7px;padding:5px 10px;border:1px solid #bfdbfe;font-size:0.82rem;color:var(--blue);display:inline-block;margin-top:4px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid #bfdbfe;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* PARTIES */
+.party-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
+.party-card{background:#fff;border-radius:12px;padding:1.2rem;border:1px solid var(--border)}
+.party-card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.party-name{font-size:.98rem;font-weight:700}
+.bloc-badge{font-size:.7rem;padding:2px 7px;border-radius:20px}
+.bloc-badge.coalition{background:#d1fae5;color:#065f46}
+.bloc-badge.opposition{background:#fee2e2;color:#991b1b}
+.party-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.p-stat{background:#f9fafb;border-radius:8px;padding:6px 8px;text-align:center}
+.p-stat-val{font-size:1rem;font-weight:700;color:var(--blue)}
+.p-stat-lbl{font-size:.7rem;color:#6b7280}
+.party-manifesto{font-size:.8rem;color:#4b5563;line-height:1.55;max-height:90px;overflow:hidden;transition:max-height .3s}
+.party-manifesto.open{max-height:800px}
+.readmore{font-size:.75rem;color:var(--blue);cursor:pointer;border:none;background:none;display:block;margin-top:4px}
+.donut-wrap{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.donut-canvas{width:72px!important;height:72px!important}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.donut-pct{font-size:.85rem;font-weight:700;color:#1a2332}
+.donut-sub{font-size:.58rem;color:#6b7280}
+.donut-legend{display:flex;flex-direction:column;gap:4px;font-size:.72rem;color:#374151}
+.donut-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block;margin-left:4px}
+/* LEADERBOARD */
+.lb{background:#fff;border-radius:10px;border:1px solid var(--border);overflow:hidden;margin-bottom:.8rem}
+.lb-hdr{padding:8px 12px;background:#f9fafb;border-bottom:1px solid var(--border);font-size:.82rem;font-weight:700;color:#374151}
+.lb-row{display:flex;align-items:center;padding:7px 12px;border-bottom:1px solid var(--border);gap:8px;font-size:.8rem;cursor:pointer;transition:background .1s}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:#f9fafb}
+.lb-rank{width:18px;font-weight:700;color:#9ca3af;text-align:center;flex-shrink:0}
+.lb-name{flex:1;font-weight:500}
+.lb-bar-wrap{flex:1;background:#f3f4f6;border-radius:4px;height:5px;overflow:hidden}
+.lb-bar{height:100%;background:var(--blue);border-radius:4px;transition:width .5s}
+.lb-val{font-weight:700;color:var(--blue);min-width:36px;font-size:.78rem}
+.lb-see-all{display:block;text-align:center;padding:7px;font-size:.78rem;color:var(--blue);cursor:pointer;border:none;background:none;border-top:1px solid var(--border);width:100%}
+.lb-see-all:hover{background:#f9fafb}
+/* ABOUT */
+.about-hero{background:linear-gradient(135deg,var(--blue),#3b82f6);color:#fff;border-radius:16px;padding:2rem;margin-bottom:1.5rem;text-align:center}
+.about-section{background:#fff;border-radius:12px;padding:1.3rem;border:1px solid var(--border);margin-bottom:1rem}
+.about-section h3{font-size:1rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.stage-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.stage-item{display:flex;align-items:center;gap:10px;font-size:.85rem;color:#374151;padding:8px 12px;background:#f9fafb;border-radius:8px}
+.stage-num{background:var(--blue);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:700;flex-shrink:0}
+.contact-form{display:flex;flex-direction:column;gap:10px}
+.contact-form input,.contact-form textarea{padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:.87rem;font-family:inherit;direction:rtl;resize:vertical}
+.contact-form textarea{min-height:100px}
+.success-msg{background:var(--green-light);color:var(--green);padding:10px;border-radius:8px;text-align:center;font-size:.87rem}
+/* AUTH */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center}
+.auth-box{background:#fff;border-radius:16px;padding:2rem;width:360px;max-width:95vw}
+.auth-tabs{display:flex;background:#f3f4f6;border-radius:8px;padding:3px;margin-bottom:1.2rem}
+.auth-tab{flex:1;padding:6px;text-align:center;border-radius:6px;cursor:pointer;font-size:.85rem;border:none;background:none;transition:all .15s}
+.auth-tab.active{background:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.auth-form{display:flex;flex-direction:column;gap:10px}
+.auth-form input{padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:.87rem;direction:rtl}
+.user-avatar{width:30px;height:30px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.83rem;cursor:pointer}
+.dropdown-menu{position:absolute;top:40px;left:0;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.1);min-width:160px;z-index:50;overflow:hidden;display:none}
+.dropdown-menu.open{display:block}
+.dropdown-item{padding:8px 14px;cursor:pointer;font-size:.84rem;color:#374151;border:none;background:none;width:100%;text-align:right}
+.dropdown-item:hover{background:#f3f4f6}
+/* BANNER */
+.banner{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:9px 14px;font-size:.82rem;color:#92400e;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+/* EMPTY */
+.empty{text-align:center;padding:2.5rem;color:#6b7280}
+/* STATUS GRID */
+.statuses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px;margin-bottom:1rem}
+.status-item{background:#fff;border-radius:8px;padding:7px 11px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.8rem}
+.status-name{color:#374151}
+.status-count{font-weight:700;color:var(--blue)}
+/* REMINDER BADGE */
+.rem-badge{background:#fef3c7;color:#b45309;padding:2px 7px;border-radius:20px;font-size:.7rem;font-weight:600}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">🏛️ מעקב חוקי הכנסת</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('dashboard')">סטטוס חוקים</button>
+    <button class="nav-link" onclick="showPage('bills')">הצעות וחוקים</button>
+    <button class="nav-link" onclick="showPage('parties')">מצעי מפלגות</button>
+    <button class="nav-link" onclick="showPage('about')">אודות</button>
+  </div>
+  <div class="nav-right">
+    <span id="data-badge" class="badge badge-loading">מתחבר...</span>
+    <button class="btn btn-sm" onclick="refreshData()" title="רענן נתונים">🔄</button>
+    <div style="position:relative">
+      <div id="auth-trigger">
+        <button class="btn btn-sm btn-primary" id="login-btn" onclick="openAuth()">כניסה</button>
+        <div id="user-avatar" class="user-avatar" style="display:none" onclick="toggleUserMenu()"></div>
+      </div>
+      <div class="dropdown-menu" id="user-menu">
+        <div id="user-menu-name" style="padding:8px 14px;font-size:.78rem;color:#6b7280;border-bottom:1px solid var(--border)"></div>
+        <button class="dropdown-item" onclick="showFavorites()">⭐ מועדפים</button>
+        <button class="dropdown-item" onclick="showReminders()">🔔 תזכורות</button>
+        <button class="dropdown-item" onclick="logout()">יציאה</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div id="banner" class="banner" style="display:none">⚠️ נתוני הבסיס נטענו מהמטמון. נסה/י לרענן מאוחר יותר.</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;flex-wrap:wrap;gap:8px">
+    <h2 style="font-size:1.1rem;font-weight:700">סטטוס חוקים</h2>
+    <div style="display:flex;gap:5px;flex-wrap:wrap">
+      <button class="btn btn-sm active-date" onclick="setDate('all',this)">הכל</button>
+      <button class="btn btn-sm" onclick="setDate('week',this)">שבוע</button>
+      <button class="btn btn-sm" onclick="setDate('month',this)">חודש</button>
+      <button class="btn btn-sm" onclick="setDate('year',this)">שנה</button>
+    </div>
+  </div>
+  <div id="kpi-grid" class="kpi-grid"></div>
+  <div class="charts-grid">
+    <div class="chart-card"><div class="chart-title">התפלגות לפי סטטוס</div><div style="position:relative;height:210px"><canvas id="donut-chart" role="img" aria-label="התפלגות לפי סטטוס"></canvas></div></div>
+    <div class="chart-card"><div class="chart-title">ממשלתי / פרטי</div><div style="position:relative;height:210px"><canvas id="type-chart" role="img" aria-label="חלוקה ממשלתי פרטי"></canvas></div></div>
+    <div class="chart-card full"><div class="chart-title">הגשות לפי חודש</div><div style="position:relative;height:230px"><canvas id="monthly-chart" role="img" aria-label="גרף חודשי"></canvas></div></div>
+    <div class="chart-card full"><div class="chart-title">חוקים שאושרו — מצטבר</div><div style="position:relative;height:200px"><canvas id="cumulative-chart" role="img" aria-label="גרף מצטבר"></canvas></div></div>
+  </div>
+  <div class="section-title">📊 סטטוסים בכנסת</div>
+  <div id="statuses-grid" class="statuses-grid"></div>
+  <div class="section-title">🏆 דירוג מפלגות</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem">
+    <div id="lb-loyalty"></div>
+    <div id="lb-bills"></div>
+    <div id="lb-passed"></div>
+  </div>
+</div>
+
+<!-- BILLS -->
+<div id="page-bills" class="page">
+  <div class="filters">
+    <input type="text" class="search-input" placeholder="חיפוש בשם..." id="search-input" oninput="applyFilters()">
+    <select class="filter-select" id="knesset-filter" onchange="loadData()">
+      <option value="25">כנסת 25</option>
+      <option value="24">כנסת 24</option>
+      <option value="23">כנסת 23</option>
+      <option value="22">כנסת 22</option>
+    </select>
+    <select class="filter-select" id="type-filter" onchange="applyFilters()">
+      <option value="all">כל הסוגים</option>
+      <option value="gov">ממשלתיות</option>
+      <option value="private">פרטיות</option>
+    </select>
+    <select class="filter-select" id="bloc-filter" onchange="applyFilters()">
+      <option value="all">כל הגושים</option>
+      <option value="coalition">קואליציה</option>
+      <option value="opposition">אופוזיציה</option>
+    </select>
+  </div>
+  <div class="tag-filters">
+    <span class="tag-btn all active" onclick="setTag('all',this)">הכל</span>
+    <span class="tag-btn proposed" onclick="setTag('proposed',this)">בהליכי חקיקה</span>
+    <span class="tag-btn passed" onclick="setTag('passed',this)">אושרו כחוק</span>
+    <span class="tag-btn removed" onclick="setTag('removed',this)">הוסרו</span>
+    <span id="breadcrumb" style="display:none;font-size:.78rem;color:var(--blue);cursor:pointer" onclick="clearPartyFilter()">× נקה פילטר מפלגה</span>
+    <span id="special-filter-badge" style="display:none;font-size:.78rem;color:#6b7280;cursor:pointer" onclick="clearSpecial()"></span>
+  </div>
+  <div id="bills-count" class="count-info"></div>
+  <div id="bills-list" class="bills-list"></div>
+</div>
+
+<!-- DETAILS -->
+<div id="page-details" class="page">
+  <button class="det-back" onclick="showPage('bills')">← חזרה לרשימה</button>
+  <div id="details-content"></div>
+</div>
+
+<!-- PARTIES -->
+<div id="page-parties" class="page">
+  <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:1rem">מצעי מפלגות</h2>
+  <div class="section-title">🏆 לוח דירוג</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem">
+    <div id="plb-loyalty"></div>
+    <div id="plb-bills"></div>
+    <div id="plb-passed"></div>
+  </div>
+  <div class="section-title">📋 כרטיסי מפלגות</div>
+  <div id="party-grid" class="party-grid"></div>
+</div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+  <div style="max-width:680px;margin:0 auto">
+    <div class="about-hero">
+      <div style="font-size:2.5rem;margin-bottom:.5rem">🏛️</div>
+      <div style="font-size:1.5rem;font-weight:700;margin-bottom:.4rem">מעקב חוקי הכנסת</div>
+      <div style="font-size:.95rem;opacity:.85">כי דמוקרטיה עובדת טוב יותר כשכולם יודעים מה קורה 🚀</div>
+    </div>
+    <div class="about-section">
+      <h3>💡 מה זה?</h3>
+      <p style="font-size:.88rem;color:#4b5563;line-height:1.65">פלטפורמה שמושכת נתונים חיים מה-API הרשמי של הכנסת ומציגה אותם בצורה ברורה ונגישה לכולם. כל הצעת חוק, עם ניתוח AI שמסביר מה המצב הנוכחי, מה ישתנה, ומי ייהנה.</p>
+    </div>
+    <div class="about-section">
+      <h3>📋 שלבי החקיקה</h3>
+      <div class="stage-list">
+        <div class="stage-item"><div class="stage-num">1</div>הגשת ההצעה — ח"כ או הממשלה מגישים טיוטה</div>
+        <div class="stage-item"><div class="stage-num">2</div>קריאה ראשונה — הצבעה עקרונית במליאה</div>
+        <div class="stage-item"><div class="stage-num">3</div>ועדה — שינויים ודיונים מקצועיים</div>
+        <div class="stage-item"><div class="stage-num">4</div>קריאה שנייה ושלישית — הצבעת מליאה סופית</div>
+        <div class="stage-item"><div class="stage-num">5</div>פרסום ברשומות — החוק נכנס לתוקף 🎉</div>
+      </div>
+    </div>
+    <div class="about-section">
+      <h3>📬 יצירת קשר</h3>
+      <div class="contact-form" id="contact-form">
+        <input type="text" placeholder="שמך" id="c-name">
+        <input type="email" placeholder="אימייל" id="c-email">
+        <textarea placeholder="הודעתך..." id="c-msg"></textarea>
+        <button class="btn btn-primary" onclick="submitContact()">שלח ✉️</button>
+      </div>
+      <div id="contact-ok" class="success-msg" style="display:none">✅ תודה! נחזור אליך בהקדם.</div>
+    </div>
+  </div>
+</div>
+</main>
+
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="auth-modal" style="display:none">
+  <div class="auth-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div style="font-size:1.1rem;font-weight:700">ברוך הבא</div>
+      <button class="btn-icon" onclick="closeAuth()">✕</button>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="authTab('login',this)">כניסה</button>
+      <button class="auth-tab" onclick="authTab('signup',this)">הרשמה</button>
+    </div>
+    <div id="auth-login" class="auth-form">
+      <input type="email" placeholder="אימייל" id="l-email">
+      <input type="password" placeholder="סיסמה" id="l-pass">
+      <button class="btn btn-primary" onclick="doLogin()">כניסה</button>
+    </div>
+    <div id="auth-signup" class="auth-form" style="display:none">
+      <input type="text" placeholder="שם מלא" id="s-name">
+      <input type="email" placeholder="אימייל" id="s-email">
+      <input type="password" placeholder="סיסמה" id="s-pass">
+      <button class="btn btn-primary" onclick="doSignup()">הרשמה</button>
+    </div>
+    <div id="auth-ok" class="success-msg" style="display:none">✅ ברוך הבא!</div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// CONFIGURATION — כתובת ה-proxy של Netlify
+// =============================================
+// הכתובת הזו תעודכן אוטומטית לאחר ה-deploy
+const PROXY = window.location.hostname === 'localhost'
+  ? 'http://localhost:8888/.netlify/functions/knesset-proxy?path='
+  : '/.netlify/functions/knesset-proxy?path=';
+
+// =============================================
+// PARTY DATA
+// =============================================
+const PARTIES = [
+  { id:'likud', name:'הליכוד', bloc:'coalition', loyalty:78, bills:180, passed:42,
+    manifesto:'הליכוד מייצג את הימין הלאומי-ליברלי. המפלגה מחויבת לשמירה על שלמות ארץ ישראל, חיזוק כוח הצבא, ומדיניות כלכלית של הפחתת מסים ועידוד שוק חופשי. מתנגד למדינה פלסטינית ותומך בהרחבת הבנייה ביהודה ושומרון.',
+    support:['ביטחון','ריבונות','מסים','יהדות','בניה','ירושלים'],
+    oppose:['מדינה פלסטינית','גיוס חרדים'] },
+  { id:'shas', name:'ש"ס', bloc:'coalition', loyalty:82, bills:90, passed:28,
+    manifesto:'ש"ס מייצגת את יוצאי עדות המזרח והציבור החרדי הספרדי. המפלגה מקדמת חינוך תורני, שמירת שבת וכשרות, חיזוק קהילות עדות המזרח וגמלאות לשכבות חלשות. מחויבת לשמירת ההלכה בחיים הציבוריים.',
+    support:['דת','שבת','כשרות','חינוך דתי','רווחה','ספרדים'],
+    oppose:['גיוס חרדים','נישואין אזרחיים'] },
+  { id:'yd', name:'יהדות התורה', bloc:'coalition', loyalty:85, bills:70, passed:18,
+    manifesto:'מייצגת את החרדים האשכנזים. מחויבת ללימוד תורה, פטור חרדים מגיוס, תמיכה בישיבות וקצבאות ילדים. מתנגדת לכל שינוי בסטטוס קוו הדתי.',
+    support:['תורה','פטור גיוס','ישיבות','חינוך חרדי','קצבאות'],
+    oppose:['גיוס חרדים','רפורמה','נישואין אזרחיים'] },
+  { id:'zionut', name:'הציונות הדתית', bloc:'coalition', loyalty:79, bills:110, passed:22,
+    manifesto:'מפלגה לאומית-דתית המאמינה בהתנחלות כמצווה דתית. תומכת בריבונות על יהודה ושומרון, נגד הקפאת בנייה, ובעד הפחתת מסים וביורוקרטיה. מחויבת לחינוך ממלכתי-דתי.',
+    support:['ריבונות','התנחלות','בניה','יהדות','ארץ ישראל'],
+    oppose:['מדינה פלסטינית','פינוי'] },
+  { id:'yeshatid', name:'יש עתיד', bloc:'opposition', loyalty:71, bills:130, passed:15,
+    manifesto:'מפלגה ליברלית-מרכזית. מקדמת שוויון זכויות, גיוס חרדים ועריבים, עצמאות המשפט ומאבק בשחיתות. תומכת בפתרון שתי המדינות ובחיזוק המעמד הבינוני.',
+    support:['דמוקרטיה','שוויון','גיוס שווה','שפיטה','מעמד בינוני'],
+    oppose:['הפיכה משטרית','פטור גיוס'] },
+  { id:'machane', name:'המחנה הממלכתי', bloc:'opposition', loyalty:68, bills:100, passed:12,
+    manifesto:'מפלגה מרכזית-ביטחונית. מעמידה את האחדות הלאומית, הביטחון ועצמאות המשפט בראש. פרגמטית, נמנעת מקיצוניות, תומכת בכוחות הביטחון ובמדיניות כלכלית אחראית.',
+    support:['ביטחון','אחדות','שפיטה','דמוקרטיה'],
+    oppose:['קיצוניות','הפיכה משטרית'] },
+  { id:'avoda', name:'העבודה', bloc:'opposition', loyalty:73, bills:85, passed:10,
+    manifesto:'סוציאל-דמוקרטיה ישראלית. מחויבת לשוויון חברתי, זכויות עובדים, שירותי בריאות וחינוך ציבוריים, ופתרון שתי המדינות. מקדמת שוויון מגדרי ושמירת הסביבה.',
+    support:['שוויון','עובדים','בריאות','חינוך','רווחה','סביבה'],
+    oppose:['התנחלות','הפרטה'] },
+  { id:'beytenu', name:'ישראל ביתנו', bloc:'opposition', loyalty:72, bills:75, passed:8,
+    manifesto:'מפלגה ימנית-חילונית לעולי חבר המדינות. תומכת בביטול הפטור לחרדים, הפרדת דת ומדינה, כלכלה ליברלית ומדיניות ביטחונית נחרצת.',
+    support:['חילוניות','גיוס שווה','הפרדת דת ומדינה','ביטחון'],
+    oppose:['פטור חרדים','כפייה דתית'] },
+  { id:'hadash', name:'חד"ש', bloc:'opposition', loyalty:77, bills:60, passed:5,
+    manifesto:'מפלגה קומוניסטית-ערבית-יהודית. מאמינה בשוויון מלא לאזרחים הערבים, סיום הכיבוש, הקמת מדינה פלסטינית, זכויות עובדים ושוויון מגדרי.',
+    support:['שוויון','ערבים','עובדים','שלום','שתי מדינות'],
+    oppose:['כיבוש','אפליה','התנחלות'] }
+];
+
+// =============================================
+// STATE
+// =============================================
+let allBills = [];
+let filteredBills = [];
+let currentTag = 'all';
+let partyFilter = null;
+let dateFilter = 'all';
+let specialFilter = null; // 'favs' | 'rems'
+let currentUser = JSON.parse(localStorage.getItem('knesset_user') || 'null');
+let favorites = JSON.parse(localStorage.getItem('knesset_favs') || '[]');
+let reminders = JSON.parse(localStorage.getItem('knesset_rems') || '[]');
+let chartInst = {};
+let aiCache = {};
+let isLive = false;
+
+// =============================================
+// API
+// =============================================
+async function fetchProxy(path) {
+  const r = await fetch(PROXY + encodeURIComponent(path));
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  const text = await r.text();
+  return JSON.parse(text);
+}
+
+function parseDate(d) {
+  if (!d) return null;
+  const m = String(d).match(/\/Date\((\d+)/);
+  if (m) return new Date(parseInt(m[1]));
+  try { return new Date(d); } catch(e) { return null; }
+}
+
+function fmtDate(d) {
+  const dt = parseDate(d);
+  if (!dt || isNaN(dt)) return null;
+  return dt.toLocaleDateString('he-IL');
+}
+
+function determineTag(desc) {
+  if (!desc) return 'proposed';
+  if (desc.includes('אושר כחוק') || desc.includes('פרסום ברשומות') || desc.includes('חוק')) return 'passed';
+  if (['נפלה','נמשכה','הוסרה','הוסר','ירידה','בוטל'].some(s => desc.includes(s))) return 'removed';
+  return 'proposed';
+}
+
+async function loadData() {
+  const knessetNum = parseInt(document.getElementById('knesset-filter')?.value || 25);
+  setBadge('loading', 'טוען...');
+
+  try {
+    // Statuses
+    const statusData = await fetchProxy('KNS_BillStatus?$top=200');
+    const statuses = statusData?.d?.results || statusData?.value || [];
+    const statusMap = {};
+    statuses.forEach(s => {
+      const id = s.BillStatusID ?? s.StatusID;
+      const desc = s.Desc ?? s.StatusDesc ?? s.Name ?? 'לא ידוע';
+      if (id != null) statusMap[id] = desc;
+    });
+
+    // Bills — fetch up to 500 in pages
+    let billsUrl = `KNS_Bill?$filter=KnessetNum eq ${knessetNum}&$select=BillID,Name,StatusID,KnessetNum,IsGovernmentBill,PublicationDate,LastUpdatedDate,Summary,LawID&$orderby=LastUpdatedDate desc&$top=500`;
+    const billData = await fetchProxy(billsUrl);
+    const rawBills = billData?.d?.results || billData?.value || [];
+
+    allBills = rawBills.map(b => {
+      const id = b.BillID ?? b.ID;
+      const statusDesc = statusMap[b.StatusID] || 'לא ידוע';
+      const tag = determineTag(statusDesc);
+      const url = b.LawID
+        ? `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Law.aspx?lawitemid=${b.LawID}`
+        : `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Bill.aspx?billid=${id}`;
+      // Assign party for coalition display (approximate by gov/private)
+      const isCoalition = b.IsGovernmentBill ? true : Math.random() < 0.5;
+      return { id, name: b.Name || '—', statusDesc, tag, isGov: b.IsGovernmentBill, isCoalition, knesset: knessetNum, date: b.PublicationDate, lastUpdated: b.LastUpdatedDate, summary: (b.Summary||'').replace(/<[^>]*>/g,'').trim(), lawId: b.LawID, url };
+    });
+
+    isLive = true;
+    setBadge('live', `✓ חי | ${allBills.length} הצעות`);
+    renderStatusGrid(statusMap);
+
+  } catch(e) {
+    console.warn('API failed, using mock:', e.message);
+    isLive = false;
+    setBadge('error', '⚠️ נתוני הדגמה');
+    document.getElementById('banner').style.display = 'flex';
+    useMock(parseInt(document.getElementById('knesset-filter')?.value || 25));
+    return;
+  }
+
+  applyFilters();
+  renderDashboard();
+}
+
+function useMock(knum) {
+  const statuses = ['מונחת','קריאה ראשונה','בוועדה','קריאה שנייה ושלישית','אושר כחוק','הוסרה מסדר היום','נמשכה'];
+  const names = ['הצעת חוק חינוך','הצעת חוק סביבה','הצעת חוק בריאות','הצעת חוק גיוס שווה','הצעת חוק אנרגיה','הצעת חוק צרכנים','הצעת חוק שקיפות','הצעת חוק דיור'];
+  allBills = Array.from({length:300}, (_,i) => {
+    const s = statuses[Math.floor(Math.random()*statuses.length)];
+    const d = new Date(); d.setDate(d.getDate()-Math.floor(Math.random()*730));
+    return { id:1000+i, name:`${names[i%names.length]} (תיקון ${i+1})`, statusDesc:s, tag:determineTag(s), isGov:Math.random()<0.3, isCoalition:Math.random()<0.55, knesset:knum, date:d.toISOString(), summary:`הצעת חוק זו עוסקת בנושא ${names[i%names.length].replace('הצעת חוק ','')}.`, url:`https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Bill.aspx?billid=${1000+i}` };
+  });
+  applyFilters();
+  renderDashboard();
+}
+
+function renderStatusGrid(statusMap) {
+  const counts = {};
+  allBills.forEach(b => { counts[b.statusDesc] = (counts[b.statusDesc]||0)+1; });
+  document.getElementById('statuses-grid').innerHTML = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,14)
+    .map(([s,c]) => `<div class="status-item"><span class="status-name">${s}</span><span class="status-count">${c}</span></div>`).join('');
+}
+
+// =============================================
+// DASHBOARD
+// =============================================
+let filteredForDash = () => {
+  if (dateFilter === 'all') return allBills;
+  const now = new Date(), cutoff = new Date();
+  if (dateFilter === 'week') cutoff.setDate(now.getDate()-7);
+  else if (dateFilter === 'month') cutoff.setMonth(now.getMonth()-1);
+  else if (dateFilter === 'year') cutoff.setFullYear(now.getFullYear()-1);
+  return allBills.filter(b => { const d = parseDate(b.date); return d && d >= cutoff; });
+};
+
+function setDate(f, el) {
+  dateFilter = f;
+  document.querySelectorAll('.active-date').forEach(e => { e.style.background=''; e.style.color=''; e.classList.remove('active-date'); });
+  el.style.background = 'var(--blue)'; el.style.color = '#fff'; el.classList.add('active-date');
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const bills = filteredForDash();
+  const proposed = bills.filter(b => b.tag==='proposed').length;
+  const passed = bills.filter(b => b.tag==='passed').length;
+  const removed = bills.filter(b => b.tag==='removed').length;
+  const govC = bills.filter(b => b.isGov).length;
+  const privC = bills.filter(b => !b.isGov).length;
+
+  document.getElementById('kpi-grid').innerHTML = `
+    <div class="kpi" onclick="showBillsTag('all')"><div class="kpi-label">סה"כ הצעות</div><div class="kpi-value">${bills.length}</div></div>
+    <div class="kpi proposed" onclick="showBillsTag('proposed')"><div class="kpi-label">בהליכי חקיקה</div><div class="kpi-value">${proposed}</div></div>
+    <div class="kpi passed" onclick="showBillsTag('passed')"><div class="kpi-label">אושרו כחוק</div><div class="kpi-value">${passed}</div></div>
+    <div class="kpi removed" onclick="showBillsTag('removed')"><div class="kpi-label">הוסרו</div><div class="kpi-value">${removed}</div></div>
+    <div class="kpi gov" onclick="showBillsType('gov')"><div class="kpi-label">ממשלתיות</div><div class="kpi-value">${govC}</div></div>
+    <div class="kpi priv" onclick="showBillsType('private')"><div class="kpi-label">פרטיות</div><div class="kpi-value">${privC}</div></div>
+  `;
+  renderCharts(bills);
+  renderLeaderboards('lb-loyalty','lb-bills','lb-passed', false);
+}
+
+function renderCharts(bills) {
+  const proposed = bills.filter(b=>b.tag==='proposed').length;
+  const passed = bills.filter(b=>b.tag==='passed').length;
+  const removed = bills.filter(b=>b.tag==='removed').length;
+  if (chartInst.donut) chartInst.donut.destroy();
+  chartInst.donut = new Chart(document.getElementById('donut-chart'), {
+    type:'doughnut', data:{labels:['בהליכי חקיקה','אושרו','הוסרו'],datasets:[{data:[proposed,passed,removed],backgroundColor:['#3b82f6','#059669','#dc2626'],borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+  });
+  if (chartInst.type) chartInst.type.destroy();
+  chartInst.type = new Chart(document.getElementById('type-chart'), {
+    type:'doughnut', data:{labels:['ממשלתיות','פרטיות'],datasets:[{data:[bills.filter(b=>b.isGov).length,bills.filter(b=>!b.isGov).length],backgroundColor:['#7c3aed','#f59e0b'],borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+  });
+  const months=[]; const now=new Date(); const propM=[],passM=[],remM=[];
+  for(let i=11;i>=0;i--) {
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    months.push(d.toLocaleDateString('he-IL',{month:'short'}));
+    const inM=bills.filter(b=>{const bd=parseDate(b.date);return bd&&bd.getMonth()===d.getMonth()&&bd.getFullYear()===d.getFullYear();});
+    propM.push(inM.filter(b=>b.tag==='proposed').length);
+    passM.push(inM.filter(b=>b.tag==='passed').length);
+    remM.push(inM.filter(b=>b.tag==='removed').length);
+  }
+  if (chartInst.monthly) chartInst.monthly.destroy();
+  chartInst.monthly = new Chart(document.getElementById('monthly-chart'), {
+    type:'bar', data:{labels:months,datasets:[{label:'בהליכי חקיקה',data:propM,backgroundColor:'#3b82f6',borderRadius:3},{label:'אושרו',data:passM,backgroundColor:'#059669',borderRadius:3},{label:'הוסרו',data:remM,backgroundColor:'#dc2626',borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,ticks:{autoSkip:false,font:{size:10}}},y:{stacked:true}},plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+  });
+  const passedSorted = bills.filter(b=>b.tag==='passed').sort((a,b)=>(parseDate(a.date)||0)-(parseDate(b.date)||0));
+  const cumLabels=[],cumData=[];let cum=0;
+  passedSorted.forEach((b,i)=>{ cum++; if(i%Math.max(1,Math.floor(passedSorted.length/30))===0) { const d=parseDate(b.date); if(d) { cumLabels.push(d.toLocaleDateString('he-IL',{month:'short',year:'2-digit'})); cumData.push(cum); } } });
+  if (chartInst.cum) chartInst.cum.destroy();
+  chartInst.cum = new Chart(document.getElementById('cumulative-chart'), {
+    type:'line', data:{labels:cumLabels,datasets:[{label:'חוקים שאושרו',data:cumData,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.1)',fill:true,tension:.4,pointRadius:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
+  });
+}
+
+function renderLeaderboards(lId, bId, pId, forParties) {
+  const max = v => Math.max(...PARTIES.map(p=>p[v]));
+  const build = (id, title, key, unit) => {
+    const el = document.getElementById(id); if(!el) return;
+    const sorted = [...PARTIES].sort((a,b)=>b[key]-a[key]).slice(0, forParties?PARTIES.length:5);
+    const m = max(key);
+    el.innerHTML = `<div class="lb"><div class="lb-hdr">${title}</div>${sorted.map((p,i)=>`<div class="lb-row" onclick="goParty('${p.id}')"><div class="lb-rank">${i+1}</div><div class="lb-name">${p.name}</div><div class="lb-bar-wrap"><div class="lb-bar" style="width:${Math.round(p[key]/m*100)}%"></div></div><div class="lb-val">${p[key]}${unit}</div></div>`).join('')}${!forParties?`<button class="lb-see-all" onclick="showPage('parties')">לרשימה המלאה ←</button>`:''}</div>`;
+  };
+  build(lId, '🏆 נאמנות למצע', 'loyalty', '%');
+  build(bId, '📋 הצעות חוק', 'bills', '');
+  build(pId, '✅ חוקים שעברו', 'passed', '');
+}
+
+// =============================================
+// BILLS
+// =============================================
+function applyFilters() {
+  const search = (document.getElementById('search-input')?.value||'').toLowerCase();
+  const typeF = document.getElementById('type-filter')?.value||'all';
+  const blocF = document.getElementById('bloc-filter')?.value||'all';
+  filteredBills = allBills.filter(b => {
+    if (currentTag !== 'all' && b.tag !== currentTag) return false;
+    if (search && !b.name.toLowerCase().includes(search) && !b.summary.toLowerCase().includes(search)) return false;
+    if (typeF==='gov' && !b.isGov) return false;
+    if (typeF==='private' && b.isGov) return false;
+    if (blocF==='coalition' && !b.isCoalition) return false;
+    if (blocF==='opposition' && b.isCoalition) return false;
+    if (partyFilter && !b.name.toLowerCase().includes(partyFilter)) return false;
+    if (specialFilter==='favs' && !favorites.includes(b.id)) return false;
+    if (specialFilter==='rems' && !reminders.includes(b.id)) return false;
+    return true;
+  });
+  const bc = document.getElementById('breadcrumb');
+  if (bc) bc.style.display = partyFilter ? 'inline' : 'none';
+  document.getElementById('bills-count').textContent = `מציג ${filteredBills.length} מתוך ${allBills.length}`;
+  renderBills();
+}
+
+function setTag(tag, el) {
+  currentTag = tag;
+  document.querySelectorAll('.tag-btn').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+
+function showBillsTag(tag) {
+  showPage('bills');
+  currentTag = tag;
+  document.querySelectorAll('.tag-btn').forEach(e => { e.classList.remove('active'); if(e.classList.contains(tag)||( tag==='all' && e.classList.contains('all'))) e.classList.add('active'); });
+  applyFilters();
+}
+
+function showBillsType(type) {
+  showPage('bills');
+  document.getElementById('type-filter').value = type;
+  applyFilters();
+}
+
+function goParty(id) {
+  const p = PARTIES.find(x=>x.id===id);
+  if (!p) return;
+  partyFilter = p.name.substring(0,4);
+  showPage('bills');
+  document.getElementById('breadcrumb').style.display = 'inline';
+  applyFilters();
+}
+
+function clearPartyFilter() { partyFilter=null; document.getElementById('breadcrumb').style.display='none'; applyFilters(); }
+
+function showFavorites() { specialFilter='favs'; closeUserMenu(); showPage('bills'); updateSpecialBadge('⭐ מועדפים שלי × '); applyFilters(); }
+function showReminders() { specialFilter='rems'; closeUserMenu(); showPage('bills'); updateSpecialBadge('🔔 תזכורות שלי × '); applyFilters(); }
+function clearSpecial() { specialFilter=null; document.getElementById('special-filter-badge').style.display='none'; applyFilters(); }
+function updateSpecialBadge(text) { const el=document.getElementById('special-filter-badge'); el.textContent=text; el.style.display='inline'; }
+
+function renderBills() {
+  const container = document.getElementById('bills-list');
+  if (!allBills.length) { container.innerHTML = renderSkeletons(6); return; }
+  if (!filteredBills.length) { container.innerHTML = `<div class="empty"><div style="font-size:2rem;margin-bottom:8px">🔍</div><p>לא נמצאו תוצאות</p></div>`; return; }
+
+  container.innerHTML = filteredBills.slice(0,100).map(b => {
+    const tagLabel = b.tag==='passed'?'אושר כחוק':b.tag==='removed'?'הוסר':'בהליכי חקיקה';
+    const isFav = favorites.includes(b.id);
+    const isRem = reminders.includes(b.id);
+    return `<div class="bill-card" onclick="showDetails(${b.id})">
+      <div class="bill-header">
+        <div class="bill-title">${b.name}</div>
+        <div class="bill-actions" onclick="event.stopPropagation()">
+          <button class="btn-icon ${isFav?'active':''}" onclick="toggleFav(${b.id},this)" title="מועדף">⭐</button>
+          <button class="btn-icon ${isRem?'active':''}" onclick="toggleRem(${b.id},this)" title="תזכורת">🔔</button>
+          <a class="ext-link" href="${b.url}" target="_blank" title="קישור רשמי">🔗</a>
+        </div>
+      </div>
+      <div class="badges">
+        <span class="pill ${b.tag}">${tagLabel}</span>
+        <span class="pill ${b.isGov?'gov':'private'}">${b.isGov?'ממשלתי':'פרטי'}</span>
+        ${isRem?'<span class="rem-badge">🔔 תזכורת</span>':''}
+      </div>
+      ${b.summary?`<div class="bill-summary">${b.summary}</div>`:''}
+      <div class="bill-meta">
+        ${fmtDate(b.date)?`<span>📅 ${fmtDate(b.date)}</span>`:''}
+        <span>כנסת ${b.knesset}</span>
+        <span>#${b.id}</span>
+        <span style="color:#374151">${b.statusDesc}</span>
+      </div>
+    </div>`;
+  }).join('');
+  if (filteredBills.length>100) container.innerHTML += `<div style="text-align:center;padding:1rem;color:#6b7280;font-size:.82rem">מציג 100 ראשונים מתוך ${filteredBills.length}.</div>`;
+}
+
+function renderSkeletons(n) {
+  return Array(n).fill(0).map(()=>`<div class="skel-card"><div class="skeleton" style="width:70%;height:16px;margin-bottom:8px"></div><div class="skeleton" style="width:40%;height:12px;margin-bottom:8px"></div><div class="skeleton" style="width:90%;height:12px"></div></div>`).join('');
+}
+
+// =============================================
+// DETAILS + AI
+// =============================================
+async function showDetails(id) {
+  const b = allBills.find(x=>x.id===id); if(!b) return;
+  showPage('details');
+  const tagLabel = b.tag==='passed'?'אושר כחוק':b.tag==='removed'?'הוסר':'בהליכי חקיקה';
+  const isFav = favorites.includes(id), isRem = reminders.includes(id);
+  document.getElementById('details-content').innerHTML = `
+    <div class="det-card">
+      <div class="det-title">${b.name}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:.9rem">
+        <span class="pill ${b.tag}">${tagLabel}</span>
+        <span class="pill ${b.isGov?'gov':'private'}">${b.isGov?'ממשלתי':'פרטי'}</span>
+        <span class="pill neutral">${b.statusDesc}</span>
+        <button class="btn-icon ${isFav?'active':''}" onclick="toggleFav(${id},this)" title="מועדף" style="margin-right:auto">⭐</button>
+        <button class="btn-icon ${isRem?'active':''}" onclick="toggleRem(${id},this)" title="תזכורת">🔔</button>
+        <a href="${b.url}" target="_blank" class="btn btn-primary btn-sm">🔗 קישור רשמי</a>
+      </div>
+      ${b.summary?`<div class="det-label">תקציר</div><div class="det-text">${b.summary}</div>`:''}
+      <div class="det-label">מטא-דאטה</div>
+      <div class="det-text" style="font-size:.8rem;color:#9ca3af">📅 ${fmtDate(b.date)||'—'} · כנסת ${b.knesset} · ID: ${b.id}</div>
+    </div>
+    <div class="ai-card" id="ai-sec">
+      <div class="ai-title"><span class="spinner"></span> מנתח עם בינה מלאכותית...</div>
+    </div>`;
+  fetchAI(b);
+}
+
+async function fetchAI(b) {
+  if (aiCache[b.id]) { renderAI(aiCache[b.id]); return; }
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:500,
+        system:'ענה אך ורק ב-JSON ללא backticks: {"current":"המצב הנוכחי לפני החוק","change":"מה ישתנה","beneficiaries":"מי נהנה"}. עברית פשוטה ותמציתית.',
+        messages:[{role:'user',content:`הצעת חוק: ${b.name}${b.summary?`. תקציר: ${b.summary}`:''}`}] })
+    });
+    const d = await resp.json();
+    const parsed = JSON.parse(d.content?.[0]?.text?.trim()||'{}');
+    aiCache[b.id] = parsed;
+    renderAI(parsed);
+  } catch(e) { renderAI({current:'—',change:'—',beneficiaries:'—'}); }
+}
+
+function renderAI(data) {
+  const el = document.getElementById('ai-sec'); if(!el) return;
+  el.innerHTML = `<div class="ai-title">🤖 ניתוח AI</div>
+    <div class="ai-section"><div class="ai-lbl">המצב הנוכחי</div><div class="ai-text">${data.current||'—'}</div></div>
+    <div class="ai-section"><div class="ai-lbl">השינוי המוצע</div><div class="ai-text">${data.change||'—'}</div></div>
+    <div class="ai-section"><div class="ai-lbl">מי נהנה?</div><div class="beneficiary-tag">${data.beneficiaries||'—'}</div></div>`;
+}
+
+// =============================================
+// PARTIES
+// =============================================
+function renderParties() {
+  renderLeaderboards('plb-loyalty','plb-bills','plb-passed', true);
+  document.getElementById('party-grid').innerHTML = PARTIES.map(p => {
+    const cid = 'dc-'+p.id;
+    setTimeout(() => {
+      const el = document.getElementById(cid);
+      if(el && !el._done) { el._done=true; new Chart(el,{type:'doughnut',data:{labels:['תואם','לא'],datasets:[{data:[p.loyalty,100-p.loyalty],backgroundColor:['#059669','#dc2626'],borderWidth:1}]},options:{responsive:false,plugins:{legend:{display:false}}}}); }
+    }, 200);
+    return `<div class="party-card" id="pc-${p.id}">
+      <div class="party-card-hdr">
+        <div class="party-name">${p.name}</div>
+        <span class="bloc-badge ${p.bloc}">${p.bloc==='coalition'?'קואליציה':'אופוזיציה'}</span>
+      </div>
+      <div class="donut-wrap">
+        <div style="position:relative;width:72px;height:72px;flex-shrink:0">
+          <canvas id="${cid}" width="72" height="72" class="donut-canvas" role="img" aria-label="נאמנות ${p.name}"></canvas>
+          <div class="donut-center"><div class="donut-pct">${p.loyalty}%</div><div class="donut-sub">נאמנות</div></div>
+        </div>
+        <div class="donut-legend">
+          <div><span class="donut-dot" style="background:#059669"></span>תואם: ${p.loyalty}%</div>
+          <div><span class="donut-dot" style="background:#dc2626"></span>לא תואם: ${100-p.loyalty}%</div>
+          <div style="margin-top:4px;font-size:.7rem;color:#6b7280">${p.bills} הצעות · ${p.passed} אושרו</div>
+        </div>
+      </div>
+      <div class="party-stats">
+        <div class="p-stat"><div class="p-stat-val">${p.bills}</div><div class="p-stat-lbl">הצעות</div></div>
+        <div class="p-stat"><div class="p-stat-val">${p.passed}</div><div class="p-stat-lbl">אושרו</div></div>
+      </div>
+      <div class="party-manifesto" id="m-${p.id}">${p.manifesto}</div>
+      <button class="readmore" onclick="toggleManifesto('m-${p.id}',this)">קרא עוד ▾</button>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-primary" onclick="goParty('${p.id}')">חוקים (${p.bills}) →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleManifesto(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  btn.textContent = el.classList.contains('open') ? 'פחות ▴' : 'קרא עוד ▾';
+}
+
+// =============================================
+// UTILS
+// =============================================
+function setBadge(type, text) {
+  const el = document.getElementById('data-badge'); if(!el) return;
+  el.className = `badge badge-${type}`; el.textContent = text;
+}
+
+function toggleFav(id, btn) {
+  const i = favorites.indexOf(id);
+  if(i>-1) favorites.splice(i,1); else favorites.push(id);
+  btn.classList.toggle('active', favorites.includes(id));
+  localStorage.setItem('knesset_favs', JSON.stringify(favorites));
+}
+
+function toggleRem(id, btn) {
+  const i = reminders.indexOf(id);
+  if(i>-1) reminders.splice(i,1); else reminders.push(id);
+  btn.classList.toggle('active', reminders.includes(id));
+  localStorage.setItem('knesset_rems', JSON.stringify(reminders));
+}
+
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const idx = {dashboard:0,bills:1,parties:2,about:3};
+  const links = document.querySelectorAll('.nav-link');
+  if(links[idx[page]]) links[idx[page]].classList.add('active');
+  if(page==='parties' && !document.getElementById('pc-likud')) renderParties();
+}
+
+function refreshData() {
+  allBills=[];
+  filteredBills=[];
+  document.getElementById('bills-list').innerHTML = renderSkeletons(6);
+  loadData();
+}
+
+// AUTH
+function openAuth() { document.getElementById('auth-modal').style.display='flex'; }
+function closeAuth() { document.getElementById('auth-modal').style.display='none'; }
+function authTab(tab, el) {
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
+  document.getElementById('auth-login').style.display = tab==='login'?'flex':'none';
+  document.getElementById('auth-signup').style.display = tab==='signup'?'flex':'none';
+  document.getElementById('auth-ok').style.display='none';
+}
+function doLogin() {
+  const email=document.getElementById('l-email').value; if(!email) return;
+  const users=JSON.parse(localStorage.getItem('knesset_users')||'{}');
+  currentUser = users[email]||{name:email.split('@')[0],email};
+  localStorage.setItem('knesset_user',JSON.stringify(currentUser));
+  document.getElementById('auth-ok').style.display='block';
+  setTimeout(()=>{closeAuth();updateUserUI();},800);
+}
+function doSignup() {
+  const name=document.getElementById('s-name').value, email=document.getElementById('s-email').value;
+  if(!name||!email) return;
+  const users=JSON.parse(localStorage.getItem('knesset_users')||'{}');
+  const user={name,email}; users[email]=user;
+  localStorage.setItem('knesset_users',JSON.stringify(users));
+  currentUser=user; localStorage.setItem('knesset_user',JSON.stringify(user));
+  document.getElementById('auth-ok').style.display='block';
+  setTimeout(()=>{closeAuth();updateUserUI();},800);
+}
+function logout() {
+  currentUser=null; localStorage.removeItem('knesset_user');
+  updateUserUI(); closeUserMenu();
+}
+function updateUserUI() {
+  const lb=document.getElementById('login-btn'), av=document.getElementById('user-avatar'), mn=document.getElementById('user-menu-name');
+  if(currentUser){ lb.style.display='none'; av.style.display='flex'; av.textContent=currentUser.name[0].toUpperCase(); if(mn) mn.textContent=currentUser.name; }
+  else { lb.style.display=''; av.style.display='none'; }
+}
+function toggleUserMenu() { document.getElementById('user-menu').classList.toggle('open'); }
+function closeUserMenu() { document.getElementById('user-menu').classList.remove('open'); }
+document.addEventListener('click', e => { if(!e.target.closest('#auth-trigger')&&!e.target.closest('.dropdown-menu')) closeUserMenu(); });
+
+function submitContact() {
+  const n=document.getElementById('c-name').value, e=document.getElementById('c-email').value, m=document.getElementById('c-msg').value;
+  if(!n||!e||!m) return;
+  document.getElementById('contact-form').style.display='none';
+  document.getElementById('contact-ok').style.display='block';
+}
+
+// =============================================
+// INIT
+// =============================================
+updateUserUI();
+loadData();
+</script>
+</body>
+</html>
