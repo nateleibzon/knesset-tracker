@@ -431,9 +431,23 @@ let isLive = false;
 // =============================================
 async function fetchProxy(path) {
   const r = await fetch(PROXY + encodeURIComponent(path));
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
   const text = await r.text();
+  if (!r.ok) {
+    let parsed = {};
+    try { parsed = JSON.parse(text); } catch(e) {}
+    const err = new Error(`HTTP ${r.status}`);
+    err.geoBlocked = parsed.error === 'geo_blocked';
+    throw err;
+  }
   return JSON.parse(text);
+}
+
+async function fetchCached(knessetNum) {
+  const [statusData, billData] = await Promise.all([
+    fetch('/data/bill-status.json').then(r => { if (!r.ok) throw new Error('no cache'); return r.json(); }),
+    fetch(`/data/bills-${knessetNum}.json`).then(r => { if (!r.ok) throw new Error('no cache'); return r.json(); })
+  ]);
+  return { statusData, billData };
 }
 
 function parseDate(d) {
@@ -493,7 +507,38 @@ async function loadData() {
     renderStatusGrid(statusMap);
 
   } catch(e) {
-    console.warn('API failed, using mock:', e.message);
+    console.warn('API failed:', e.message);
+    if (e.geoBlocked) {
+      try {
+        console.log('Trying cached data...');
+        const { statusData, billData } = await fetchCached(knessetNum);
+        const statuses = statusData?.d?.results || statusData?.value || [];
+        const statusMap = {};
+        statuses.forEach(s => {
+          const id = s.BillStatusID ?? s.StatusID;
+          const desc = s.Desc ?? s.StatusDesc ?? s.Name ?? 'לא ידוע';
+          if (id != null) statusMap[id] = desc;
+        });
+        const rawBills = billData?.d?.results || billData?.value || [];
+        allBills = rawBills.map(b => {
+          const id = b.BillID ?? b.ID;
+          const statusDesc = statusMap[b.StatusID] || 'לא ידוע';
+          const tag = determineTag(statusDesc);
+          const url = b.LawID
+            ? `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Law.aspx?lawitemid=${b.LawID}`
+            : `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Bill.aspx?billid=${id}`;
+          const isCoalition = b.IsGovernmentBill ? true : Math.random() < 0.5;
+          return { id, name: b.Name || '—', statusDesc, tag, isGov: b.IsGovernmentBill, isCoalition, knesset: knessetNum, date: b.PublicationDate, lastUpdated: b.LastUpdatedDate, summary: (b.Summary||'').replace(/<[^>]*>/g,'').trim(), lawId: b.LawID, url };
+        });
+        isLive = false;
+        setBadge('error', '⚠️ נתונים מהמטמון');
+        applyFilters();
+        renderDashboard();
+        return;
+      } catch(ce) {
+        console.warn('Cache also failed:', ce.message);
+      }
+    }
     isLive = false;
     setBadge('error', '⚠️ נתוני הדגמה');
     document.getElementById('banner').style.display = 'flex';
