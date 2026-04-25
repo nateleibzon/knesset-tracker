@@ -2,10 +2,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { AIAnalysis } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const MOCK_ANALYSIS: AIAnalysis = {
+  currentSituation: "לא ניתן היה לנתח את החוק כרגע.",
+  proposedChange: "אנא נסו שוב במועד מאוחר יותר.",
+  beneficiaryPopulation: "לא ידוע"
+};
 
 export const generateBillAnalysis = async (title: string, description: string): Promise<AIAnalysis> => {
+  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+  if (!apiKey) return MOCK_ANALYSIS;
+
   try {
+    const ai = new GoogleGenAI({ apiKey });
     const prompt = `
       You are a helpful political analyst explaining Israeli legislation to the general public in plain Hebrew.
       
@@ -20,7 +28,7 @@ export const generateBillAnalysis = async (title: string, description: string): 
       Tone: Clear, objective, and simple (ELI5).
     `;
 
-    const response = await ai.models.generateContent({
+    const response = await (ai as any).models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
@@ -44,10 +52,6 @@ export const generateBillAnalysis = async (title: string, description: string): 
     throw new Error("No response from AI");
   } catch (error) {
     console.warn("AI Analysis unavailable:", error);
-    return {
-      currentSituation: "לא ניתן היה לנתח את החוק כרגע.",
-      proposedChange: "אנא נסו שוב במועד מאוחר יותר.",
-      beneficiaryPopulation: "לא ידוע"
-    };
+    return MOCK_ANALYSIS;
   }
 };
