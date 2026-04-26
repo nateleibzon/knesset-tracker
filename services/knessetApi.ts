@@ -14,7 +14,7 @@ import {
   PlatformAlignment
 } from '../types';
 
-const BASE_URL = "https://knesset.gov.il/OdataV4/ParliamentInfo";
+const BASE_URL = "https://knesset.gov.il/Odata/ParliamentInfo.svc";
 
 // --- Constants ---
 
@@ -86,14 +86,16 @@ const fetchWithProxy = async (url: string) => {
 export const fetchMetadata = async () => {
   try {
     // 1. Statuses
-    const statusRes = await fetchWithProxy(`${BASE_URL}/KNS_Status?$select=StatusID,StatusDesc`);
+    const statusRes = await fetchWithProxy(`${BASE_URL}/KNS_Status?$select=StatusID,Desc&$top=500`);
     const statusData = await statusRes.json();
-    const statuses = statusData.value as KNS_Status[];
+    const rawStatuses = (statusData?.d?.results || statusData?.value || []) as any[];
+    const statuses: KNS_Status[] = rawStatuses.map(s => ({ StatusID: s.StatusID, StatusDesc: s.Desc || s.StatusDesc || 'לא ידוע' }));
 
     // 2. Latest Knesset
     const knessetRes = await fetchWithProxy(`${BASE_URL}/KNS_Bill?$select=KnessetNum&$orderby=KnessetNum desc&$top=1`);
     const knessetData = await knessetRes.json();
-    const latestKnessetNum = knessetData.value[0]?.KnessetNum || 25;
+    const knessetRows = knessetData?.d?.results || knessetData?.value || [];
+    const latestKnessetNum = knessetRows[0]?.KnessetNum || 25;
 
     return { statuses, latestKnessetNum, isMock: false };
   } catch (e) {
@@ -112,58 +114,56 @@ export const fetchMetadata = async () => {
 
 export const fetchBills = async (knessetNum: number, statuses: KNS_Status[]): Promise<{ bills: BillModel[], persons: Map<number, string>, history: KNS_BillHistory[], isMock: boolean }> => {
   try {
-    // Fetch Bills - Limit to 200 via proxy to ensure stability
-    const billsRes = await fetchWithProxy(`${BASE_URL}/KNS_Bill?$filter=KnessetNum eq ${knessetNum}&$select=ID,Name,StatusID,KnessetNum,IsGovernmentBill,PublicationDate,LastUpdatedDate,Summary,Explanation,LawID,DocID&$orderby=LastUpdatedDate desc&$top=200`);
-    
-    const billsData = await billsRes.json();
-    const rawBills = billsData.value as KNS_Bill[];
+    // Fetch Bills (v3 field names: BillID, SummaryLaw, SubTypeDesc)
+    const billsRes = await fetchWithProxy(`${BASE_URL}/KNS_Bill?$filter=KnessetNum eq ${knessetNum}&$select=BillID,Name,StatusID,KnessetNum,SubTypeDesc,PublicationDate,LastUpdatedDate,SummaryLaw&$orderby=LastUpdatedDate desc&$top=200`);
 
-    const billIds = rawBills.map(b => b.ID);
+    const billsData = await billsRes.json();
+    const rawBills = (billsData?.d?.results || billsData?.value || []) as any[];
+
+    const billIds = rawBills.map(b => b.BillID);
 
     // Fetch Initiators & Related Info
     let rawInitiators: KNS_BillInitiator[] = [];
     let rawPersons: KNS_Person[] = [];
     let rawMks: KNS_Mk[] = [];
     let rawFactions: KNS_Faction[] = [];
-    
-    if (billIds.length > 0) {
-      // Fetch Initiators for a subset of bills (to avoid huge URL in GET request)
-      const idsToFetch = billIds.slice(0, 40); 
-      
-      // Fetch Initiators
-      const initRes = await fetchWithProxy(`${BASE_URL}/KNS_BillInitiators?$filter=BillID in (${idsToFetch.join(',')})&$select=BillID,PersonID`);
-      if (initRes.ok) {
-        const initData = await initRes.json();
-        rawInitiators = initData.value;
-      }
 
-      const personIds = Array.from(new Set(rawInitiators.map(i => i.PersonID)));
-      
-      if (personIds.length > 0) {
-         // Fetch Persons
-         const personRes = await fetchWithProxy(`${BASE_URL}/KNS_Person?$filter=PersonID in (${personIds.join(',')})&$select=PersonID,FullName`);
-         if (personRes.ok) {
-           const personData = await personRes.json();
-           rawPersons = personData.value;
-         }
+    try {
+      if (billIds.length > 0) {
+        const idsToFetch = billIds.slice(0, 40);
+        const initRes = await fetchWithProxy(`${BASE_URL}/KNS_BillInitiator?$filter=BillID in (${idsToFetch.join(',')})&$select=BillID,PersonID`);
+        if (initRes.ok) {
+          const initData = await initRes.json();
+          rawInitiators = initData?.d?.results || initData?.value || [];
+        }
 
-         // Fetch MKs (for faction info and role)
-         const mkRes = await fetchWithProxy(`${BASE_URL}/KNS_Mk?$filter=PersonID in (${personIds.join(',')})&$select=PersonID,CurrentFactionID`);
-         if (mkRes.ok) {
+        const personIds = Array.from(new Set(rawInitiators.map(i => i.PersonID)));
+
+        if (personIds.length > 0) {
+          const personRes = await fetchWithProxy(`${BASE_URL}/KNS_Person?$filter=PersonID in (${personIds.join(',')})&$select=PersonID,FullName`);
+          if (personRes.ok) {
+            const personData = await personRes.json();
+            rawPersons = personData?.d?.results || personData?.value || [];
+          }
+
+          const mkRes = await fetchWithProxy(`${BASE_URL}/KNS_Mk?$filter=PersonID in (${personIds.join(',')})&$select=PersonID,CurrentFactionID`);
+          if (mkRes.ok) {
             const mkData = await mkRes.json();
-            rawMks = mkData.value;
-         }
+            rawMks = mkData?.d?.results || mkData?.value || [];
+          }
 
-         // Fetch Factions
-         const factionIds = Array.from(new Set(rawMks.map(m => m.CurrentFactionID).filter(id => id !== null))) as number[];
-         if (factionIds.length > 0) {
-             const factionRes = await fetchWithProxy(`${BASE_URL}/KNS_Faction?$filter=FactionID in (${factionIds.join(',')})&$select=FactionID,Name`);
-             if (factionRes.ok) {
-                 const factionData = await factionRes.json();
-                 rawFactions = factionData.value;
-             }
-         }
+          const factionIds = Array.from(new Set(rawMks.map(m => m.CurrentFactionID).filter(id => id !== null))) as number[];
+          if (factionIds.length > 0) {
+            const factionRes = await fetchWithProxy(`${BASE_URL}/KNS_Faction?$filter=FactionID in (${factionIds.join(',')})&$select=FactionID,Name`);
+            if (factionRes.ok) {
+              const factionData = await factionRes.json();
+              rawFactions = factionData?.d?.results || factionData?.value || [];
+            }
+          }
+        }
       }
+    } catch (e) {
+      console.warn('Initiator fetch failed, skipping:', e);
     }
 
     // Lookup Maps
@@ -176,62 +176,53 @@ export const fetchBills = async (knessetNum: number, statuses: KNS_Status[]): Pr
     const factionNameMap = new Map(rawFactions.map(f => [f.FactionID, f.Name]));
     
     const bills: BillModel[] = rawBills.map(b => {
+      const billId = b.BillID ?? b.ID;
       const statusDesc = statusMap.get(b.StatusID) || 'לא ידוע';
-      const summary = cleanText(b.Summary);
-      const explanation = cleanText(b.Explanation);
-      
-      const relatedInitiators = rawInitiators.filter(i => i.BillID === b.ID);
+      const isGov = b.IsGovernmentBill ?? (b.SubTypeDesc || '').includes('ממשלתית');
+      const summary = cleanText(b.SummaryLaw || b.Summary || null);
+      const explanation = cleanText(b.Explanation || null);
+
+      const relatedInitiators = rawInitiators.filter(i => i.BillID === billId);
       const initiatorIds = relatedInitiators.map(i => i.PersonID);
-      
-      // Build Rich Initiators with Party and Role
+
       const initiators: Initiator[] = relatedInitiators.map(i => {
           const name = personMap.get(i.PersonID) || 'לא ידוע';
-          
-          // Determine Party from MK record
           const factionId = mkFactionMap.get(i.PersonID);
           const party = factionId ? factionNameMap.get(factionId) || null : null;
-          
-          // Determine Role: If in MK table -> 'חבר כנסת'.
           const role = mkFactionMap.has(i.PersonID) ? 'חבר כנסת' : null;
-          
           return { id: i.PersonID, name, party, role };
       });
 
       const initiatorNames = initiators.map(i => i.name);
 
-      // Determine Coalition Status
-      // 1. Government bills are always Coalition
-      // 2. Private bills: Check if the primary initiator (first one) is from a Coalition party
-      let isCoalition = b.IsGovernmentBill;
+      let isCoalition = isGov;
       if (!isCoalition && initiators.length > 0) {
           const firstParty = initiators[0].party;
-          if (firstParty && isCoalitionParty(firstParty)) {
-              isCoalition = true;
-          }
+          if (firstParty && isCoalitionParty(firstParty)) isCoalition = true;
       }
 
       return {
-        id: b.ID,
+        id: billId,
         name: b.Name,
         statusId: b.StatusID,
         statusDesc,
         knessetNum: b.KnessetNum,
-        isGovernment: b.IsGovernmentBill,
+        isGovernment: isGov,
         publicationDate: b.PublicationDate,
         lastUpdatedDate: b.LastUpdatedDate,
         summary,
         explanation,
-        lawId: b.LawID,
-        docId: b.DocID,
+        lawId: b.LawID || null,
+        docId: b.DocID || null,
         tag: determineTag(statusDesc),
-        initiatorType: b.IsGovernmentBill ? InitiatorType.Government : InitiatorType.Private,
-        officialUrl: buildOfficialUrl(b),
+        initiatorType: isGov ? InitiatorType.Government : InitiatorType.Private,
+        officialUrl: `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Bill.aspx?billid=${billId}`,
         displaySummary: summary || explanation || 'אין תקציר זמין',
         initiators,
         initiatorIds,
         initiatorNames,
         isCoalition,
-        platformAlignment: determineAlignment(b.ID) // Injected simulated logic
+        platformAlignment: determineAlignment(billId)
       };
     });
 
