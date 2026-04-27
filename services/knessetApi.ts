@@ -99,13 +99,22 @@ export const fetchMetadata = async () => {
 
     return { statuses, latestKnessetNum, isMock: false };
   } catch (e) {
-    console.warn("API Warning (Metadata), switching to fallback data:", e);
-    return { 
+    console.warn("Live API failed, trying cached data:", e);
+    try {
+      const cachedRes = await fetch('/data/bill-status.json');
+      const cachedData = await cachedRes.json();
+      const rawStatuses = (cachedData?.d?.results || cachedData?.value || []) as any[];
+      const statuses: KNS_Status[] = rawStatuses.map((s: any) => ({ StatusID: s.StatusID, StatusDesc: s.Desc || s.StatusDesc || 'לא ידוע' }));
+      return { statuses, latestKnessetNum: 25, isMock: false };
+    } catch (ce) {
+      console.warn("Cache also failed:", ce);
+    }
+    return {
       statuses: [
         { StatusID: 1, StatusDesc: 'מונחת' },
         { StatusID: 2, StatusDesc: 'אושר כחוק' },
         { StatusID: 3, StatusDesc: 'הוסרה מסדר היום' }
-      ], 
+      ],
       latestKnessetNum: 25,
       isMock: true
     };
@@ -229,7 +238,34 @@ export const fetchBills = async (knessetNum: number, statuses: KNS_Status[]): Pr
     return { bills, persons: personMap, history: [], isMock: false };
 
   } catch (e) {
-    console.warn("API Warning (Bills), switching to demo data:", e);
+    console.warn("Live API failed for bills, trying cache:", e);
+    try {
+      const cachedRes = await fetch(`/data/bills-${knessetNum}.json`);
+      const cachedData = await cachedRes.json();
+      const statusMap = new Map(statuses.map(s => [s.StatusID, s.StatusDesc]));
+      const rawBills = (cachedData?.d?.results || cachedData?.value || []) as any[];
+      const bills: BillModel[] = rawBills.map(b => {
+        const billId = b.BillID ?? b.ID;
+        const statusDesc = statusMap.get(b.StatusID) || 'לא ידוע';
+        const isGov = b.IsGovernmentBill ?? (b.SubTypeDesc || '').includes('ממשלתית');
+        const summary = cleanText(b.SummaryLaw || b.Summary || null);
+        return {
+          id: billId, name: b.Name, statusId: b.StatusID, statusDesc,
+          knessetNum: b.KnessetNum, isGovernment: isGov,
+          publicationDate: b.PublicationDate, lastUpdatedDate: b.LastUpdatedDate,
+          summary, explanation: '', lawId: null, docId: null,
+          tag: determineTag(statusDesc),
+          initiatorType: isGov ? InitiatorType.Government : InitiatorType.Private,
+          officialUrl: `https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/Bill.aspx?billid=${billId}`,
+          displaySummary: summary || 'אין תקציר זמין',
+          initiators: [], initiatorIds: [], initiatorNames: [],
+          isCoalition: isGov, platformAlignment: determineAlignment(billId)
+        };
+      });
+      return { bills, persons: new Map(), history: [], isMock: false };
+    } catch (ce) {
+      console.warn("Cache also failed:", ce);
+    }
     const mockData = generateMockData(knessetNum, statuses);
     return { ...mockData, isMock: true };
   }
