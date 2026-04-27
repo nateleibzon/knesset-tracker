@@ -1,0 +1,1006 @@
+{
+  "odata.metadata": "https://knesset.gov.il/Odata/ParliamentInfo.svc/$metadata#KNS_Bill&$select=BillID,Name,StatusID,KnessetNum,SubTypeDesc,PublicationDate,LastUpdatedDate,SummaryLaw",
+  "value": [
+    {
+      "BillID": 2081171,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הגנת הצרכן (תיקון - איסור על שיווק טלפוני למספר הרשום במאגר \"אל תתקשרו אלי\"), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081172,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק רציפות הדיון בהצעות חוק (הוראת שעה - כנסת יוצאת וכנסת נכנסת שאינן ברציפות), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081174,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הסכמים לנשיאת עוברים (אישור הסכם ומעמד היילוד) (תיקון - הרחבת הזכאות להליכי נשיאת עוברים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081175,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ברית הזוגיות האזרחית, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081176,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק התפזרות הכנסת העשרים ושתיים, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081177,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק אימוץ ילדים (תיקון - כשירות המאמץ), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081179,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הבטחת הכנסה (תיקון - הצמדת הגמלה בגיל פרישה לשכר הממוצע במשק), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081180,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לקידום שירותי הרפואה בעיר אילת (תיקוני חקיקה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081181,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק איסור פרסומת והגבלת השיווק של מוצרי טבק ועישון (תיקון - ביטול החרגת העיתונות המודפסת), התש\"ף-2019 ",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081182,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק איסור טיפול המרה לקטין, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081183,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הרשות הלאומית למאבק בעוני, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081184,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הסדרים במשק המדינה (תיקוני חקיקה להשגת יעדי התקציב) (תיקון - הנחה בארנונה לרופאים מתמחים בפריפריה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081185,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - השוואת קצבת הנכות לשכר מינימום), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081186,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הפעלת תחבורה ציבורית מצומצמת ביום המנוחה השבועי, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081187,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק איסור אלימות בספורט (תיקון - איסור התבטאות גזענית מטעמים של זהות מגדרית או נטייה מינית), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081188,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק זכויות הסטודנט (תיקון - חובת דיווח שנתית בדבר תלונות סטודנטים לוועדת החינוך התרבות והספורט של הכנסת), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081189,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הכנסת (תיקון - קביעת שכר חברי הכנסת בידי ועדה ציבורית), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081190,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הממשלה (תיקון - ועדת שרים לענייני ביטחון לאומי), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081191,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק סיוע לצעירים חסרי עורף משפחתי, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081193,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק דמי מחלה (היעדרות בשל מחלת ילד) (תיקון - היעדרות בשל מחלת ילדו של בן זוג), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081195,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק שלילת תקצוב מוסדות חינוך המפלים תלמידים ברישום אליהם (תיקוני חקיקה), התש\"ף-2019 ",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081196,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק האגודות העותומניות (רישום ופיקוח), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081197,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - קצבת תלויים וקצבת אזרח ותיק), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081198,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק-יסוד: ישראל - מדינת הלאום של העם היהודי (תיקון - ביטול החוק)",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081199,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח לאומי (תיקון - ביטוח זכויות עצמאי שעיקר הכנסתו מעסק שמצוי בפשיטת רגל או בפירוק), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081200,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ארוחה יומית לתלמיד (תיקון - הרחבת תחולת החוק), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081201,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק-יסוד: הממשלה (תיקון - הגבלת כהונת ראש הממשלה)",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081202,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק שירות המילואים (תיקון - משרת מילואים פעיל), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081203,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק המועצה להשכלה גבוהה (תיקון - עידוד הנגשה להשכלה גבוהה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081204,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק זכויות התלמיד (תיקון - פיצוי בשל הפליית תלמידים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081205,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק למניעת העישון במקומות ציבוריים והחשיפה לעישון (תיקון - ייעול האכיפה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081206,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לימוד חובה (תיקון - חינוך חינם לפעוטות ולילדים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081207,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק זכויות נפגעי עבירה (תיקון - שמירת דגימה פורנזית של נפגעי עבירת מין לצורך הפקת דנ\"א ללא הגבלת זמן), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081208,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לתיקון דיני הרשויות המקומיות (ביטול סמכות שר הפנים לעניין חוקי עזר בדבר פתיחתם וסגירתם של עסקים בימי מנוחה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081209,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ארוחת בוקר במוסדות חינוך, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081211,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק שכר מינימום (תיקון - שכר מינימום לעובד שטרם מלאו לו 18 שנים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081212,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הפעלת תחבורה ציבורית ביום המנוחה השבועי, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081213,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק שירות המילואים (תיקון - מטרת שירות המילואים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081214,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ההוצאה לפועל (תיקון - חייבים מוגנים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081215,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הבנקאות (שירות ללקוח) (תיקון - פרסום מדד עמלות למשקי בית), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081217,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ביטוח בריאות ממלכתי (תיקון - החזר דמי נסיעה באמבולנס), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081219,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - זכאות לדמי אבטלה לעובד שהתפטר לשם טיפול בילדו), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081220,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק החלת הריבונות של מדינת ישראל על אזור יהודה והשומרון, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081221,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק שוויון זכויות לאנשים עם מוגבלות (תיקון - מניעת הפליה במחיר של שירות ציבורי או מוצר שהם נגישים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081222,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ביטוח בריאות ממלכתי (תיקון - רפואת ילדים דחופה בפרירפיה בשעות הלילה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081225,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - תגמול למשרתים במילואים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081226,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - תשלום גמלה בעד תקופה שקדמה להגשת התביעה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081229,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הסדרים במשק המדינה (תיקוני חקיקה להשגת יעדי התקציב) (תיקון - חישוב עליית מחירי הארנונה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081230,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לתיקון פקודת התעבורה (ביטול קנס בשל רכישת מערכות בטיחות מתקדמות), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081231,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לתיקון פקודת הסמים המסוכנים (הגדרת צמח הקנבוס, מדרוג עבירות ועונשים בסם קנבוס), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081232,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הרחבת ההגדרה \"חבלת שירות\" לעניין תגמולים ושיקום (תיקוני חקיקה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081233,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ביטוח בריאות ממלכתי (תיקון - השתתפות בטיפולי שיניים, פה ולסת לנפגעי שיתוק מוחין), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081234,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק חופשה שנתית (תיקון - קביעת יום פתיחת שנת הלימודים כיום בחירה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081235,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לתיקון פקודת הסמים המסוכנים (החזקה או שימוש לצריכה עצמית של סם מסוג קנבוס או שרף של קנבוס), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081236,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק משפחות חיילים שנספו במערכה (תגמולים ושיקום) (תיקון - גמול לאח הנספה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081237,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק שינויים בהסדר תקופת הלידה וההורות (תיקוני חקיקה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081238,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - השוואת קצבת נכות לשכר המינימום), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081239,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הגנה על עובדים (חשיפת עבירות ופגיעה בטוהר המידות או במינהל התקין) (תיקון - הארכת תקופת ההתיישנות בתביעה של חושף שחיתות נגד מעסיקו), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081240,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק חובת תשלום בשוברים, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081241,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - דמי פגיעה לעצמאי), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081242,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק החלת הריבונות הישראלית על בקעת הירדן, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081243,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ביטוח בריאות ממלכתי (תיקון - תנאים להחלפת תרופה, טיפול, מטפל, נותן שירותים או מוסד רפואי), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081244,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק עבודת נשים (תיקון - תקופת לידה והורות להורה יחיד), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081246,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הסדרת שוק הקנאביס, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081248,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק בתי המשפט (תיקון - איסור פרסום לשם הגנה על ביטחון תעסוקתי), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081249,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק שירות הקבע בצבא הגנה לישראל (הליכים לעניין החלטות הנוגעות לחיילים בשירות קבע) (תיקון - סמכות נגררת ומקום מושב), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081250,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לתיקון פקודת העיריות (החזר הוצאות והשתלמויות לחברי מועצה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081251,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק זכויות הסטודנט (תיקון - ביטול ארגון סטודנטים יציג), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081253,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ביטוח בריאות ממלכתי (תיקון - זכאות למימון טיפול על ידי רופא שאינו כלול בהסדר הבחירה של קופת החולים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081254,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ביטוח בריאות ממלכתי (תיקון - צמצום פערים בין הפריפריה למרכז), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081255,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק חוזה הביטוח (תיקון - דרך תשלום תגמולי ביטוח), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081256,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק זכויות, שירותים והתאמות בחינוך לילדים עם צרכים מיוחדים, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081257,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק צער בעלי חיים (הגנה על בעלי חיים) (תיקון - איסור משלוחים חיים לשחיטה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081258,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק עבודת נשים (תיקון - חלוקת תקופת הלידה וההורות בין סטודנטית לבן זוגה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081259,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק דמי מחלה (היעדרות בשל מחלת ילד) (תיקון - בן זוג לומד), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081260,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק ביטוח בריאות ממלכתי (תיקון - ייצוג גוף העוסק בתחום הבריאות על ידי שדלן), התש\"ף-2019 ",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081261,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק התכנון והבנייה (תיקון - ניגוד עניינים של חוקר), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081262,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק למניעת העסקה של עברייני מין במוסדות מסוימים (תיקון - קביעת חובה לחדש אישור המשטרה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081263,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לתיקון פקודת הסמים המסוכנים (זנים תעשייתיים של קנבוס), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081264,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק למניעת העישון במקומות ציבוריים והחשיפה לעישון (תיקון - הקמת מערך נאמני מניעת עישון), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081265,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לימוד חובה (תיקון - חינוך חינם לפעוטות ולילדים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081266,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הפקדות וזכויות סוציאליות לעצמאיים (תיקוני חקיקה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081267,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק העונשין (תיקון - ענישה על עבירה חוזרת כנגד קטין וחסר ישע), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081268,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק נכי רדיפות הנאצים (תיקון - ביטול התלות בין בעיה רפואית להכרה במחלה בגין המלחמה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081269,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק חובת שקיפות להסדר ניגוד עניינים של שר או ראש הממשלה, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081270,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק דמי מחלה (תיקון - איסור פיטורים בעת היעדרות בשל מחלת ילד), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081271,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק התכנון והבנייה (תיקון - שטח ציבורי פתוח בתכנית למגורים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081272,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק-יסוד: זכויות חברתיות",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081273,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הבטחת הכנסה (תיקון - זכאות להטבות הניתנות לזכאים לגמלת הבטחת הכנסה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081274,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק התכנון והבנייה (תיקון - שילוב נציגי משרד הבריאות וחובת תסקיר השפעה על הבריאות), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081276,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק להסדרת שירותי ההשגחה על הכשרות, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081277,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לתיקון פקודת הסמים המסוכנים (הוספת חומר קנבוס כחומר בעל תועלת רפואית), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081278,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - הכנסה מביטוח אובדן כושר עבודה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081279,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק התכנון והבנייה (תיקון - חיבור לחשמל) (הוראת שעה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081280,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק זכויות לעובד עצמאי, התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081281,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הגנת הפרטיות (תיקון - פרטיות קטינים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081282,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק המועצה לענף הלול (ייצור ושיווק) (תיקון - סימון ביצים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081283,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק לתיקון פקודת התעבורה (תשלום קנס בתשלומים), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081286,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק החזר גביית יתר (תיקוני חקיקה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    },
+    {
+      "BillID": 2081287,
+      "KnessetNum": 22,
+      "Name": "הצעת חוק הביטוח הלאומי (תיקון - השלמת סכום קצבת אזרח ותיק לנכה), התש\"ף-2019",
+      "SubTypeDesc": "פרטית",
+      "StatusID": 104,
+      "PublicationDate": null,
+      "SummaryLaw": null,
+      "LastUpdatedDate": "2021-06-29T07:48:03.727"
+    }
+  ],
+  "odata.nextLink": "KNS_Bill?$filter=KnessetNum%20eq%2022&$orderby=LastUpdatedDate%20desc&$select=BillID,Name,StatusID,KnessetNum,SubTypeDesc,PublicationDate,LastUpdatedDate,SummaryLaw&$top=400&$skiptoken=datetime'2021-06-29T07%3A48%3A03.727',2081287"
+}
